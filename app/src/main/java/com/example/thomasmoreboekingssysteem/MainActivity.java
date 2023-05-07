@@ -47,55 +47,41 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Button button = findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText input = findViewById(R.id.textInputLayout4);
+                String personeelsnummer = input.getText().toString().trim();
+                String url = "https://boekingssysteem-api.azurewebsites.net/api/Persoon/get" + personeelsnummer;
 
-            Button button = findViewById(R.id.button);
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Connection connection;
-                    EditText input;
-                    input = findViewById(R.id.textInputLayout4);
-                    String output = "";
-                    String personeelsnummer = String.valueOf(input.getText());
-                    ConnectionDB con = new ConnectionDB();
-                    connection = con.conclass();
-                    if (con != null) {
+                JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
                         try {
-                            String sql = "select * from Boekingssysteem.Persoon where Personeelnummer like '"+personeelsnummer+"'";
-                            Statement smt = connection.createStatement();
-                            ResultSet set = smt.executeQuery(sql);
-                            while (set.next()){
-                                output = set.getString(1);
-                               if (output.contains(personeelsnummer)) {
-                                    Intent intent = new Intent(MainActivity.this, Status.class);
-                                    intent.putExtra("personeelsnummer", personeelsnummer);
-                                    startActivity(intent);
-                               }
+                            String persoonId = response.getString("personeelnummer");
+                            //Toast.makeText(MainActivity.this, persoonId, Toast.LENGTH_SHORT).show();
+                            if (persoonId.equals(personeelsnummer)) {
+                                Intent intent = new Intent(MainActivity.this, Status.class);
+                                intent.putExtra("personeelsnummer", personeelsnummer);
+                                startActivity(intent);
                             }
-                            connection.close();
-                        }catch (Exception e){
-                            Log.e("error is", e.getMessage());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Toast.makeText(MainActivity.this, "Personeelsnummer niet gevonden", Toast.LENGTH_SHORT).show();
                         }
                     }
-                }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(MainActivity.this, "Personeelsnummer niet gevonden", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                // Add the request to the RequestQueue.
+                RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+                queue.add(request);
+            }
         });
     }
 }
-
-//ApiIdRequest apiIdRequest = new ApiIdRequest(MainActivity.this);
-//   apiIdRequest.GetId(inputtext, new ApiIdRequest.VolleyResponseListener() {
-//                    @Override
-//                    public void onError(String message) {
-//                        Toast.makeText(MainActivity.this, "Verkeerde personeelsnummer", Toast.LENGTH_SHORT).show();
-//                    }
-//
-//                    @Override
-//                    public void onResponse(String persoonId) {
-//                        Toast.makeText(MainActivity.this, persoonId, Toast.LENGTH_SHORT).show();
-//                        if (persoonId == inputtext){
-//                            Intent intent=new Intent(MainActivity.this,Status.class);
-//                            intent.putExtra("personeelsnummer", inputtext);
-//                            startActivity(intent);
-//                        }
-//                    }
-//                });

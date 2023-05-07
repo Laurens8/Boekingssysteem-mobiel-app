@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.sql.Connection;
@@ -18,7 +19,16 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import android.widget.ViewAnimator;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -27,22 +37,17 @@ import java.sql.Statement;
 
 public class Status extends AppCompatActivity {
 
-    Connection conncect;
-    String connectionRes="";
-
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_status);
 
-        Connection connection;
-        String output = "";
+
         String newString;
         Button button1, button2;
         TextView status,id,naam,voornaam;
         FloatingActionButton floatingActionButton;
-        //final RelativeLayout relativeLayout;
         status = findViewById(R.id.textViewStatus);
         button1 = findViewById(R.id.button3);
         button2 = findViewById(R.id.button4);
@@ -52,37 +57,46 @@ public class Status extends AppCompatActivity {
         Intent intent = getIntent();
         newString= intent.getStringExtra("personeelsnummer");
         Persoon_model docent = new Persoon_model();
+        String url = "https://boekingssysteem-api.azurewebsites.net/api/Persoon/get" + newString.trim();
+        String url2 = "https://boekingssysteem-api.azurewebsites.net/api/Persoon/put" + newString.trim();
 
-        ConnectionDB con = new ConnectionDB();
-        connection = con.conclass();
-        if (con != null) {
-            try {
-                String sql = "select * from Boekingssysteem.Persoon where Personeelnummer like '"+newString+"'";
-                Statement smt = connection.createStatement();
-                ResultSet set = smt.executeQuery(sql);
-                while (set.next()){
-                    docent.Personeelnummer = set.getString(1);
-                    docent.Naam = set.getString(2);
-                    docent.Voornaam = set.getString(3);
-                    docent.Aanwezig = set.getBoolean(5);
-                }
-                id.setText(docent.Personeelnummer);
-                naam.setText(docent.Naam);
-                voornaam.setText(docent.Voornaam);
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    String persoonId = response.getString("personeelnummer");
+                    String persoonNaam = response.getString("naam");
+                    String persoonVoornaam = response.getString("voornaam");
+                    String persoonStatus = response.getString("aanwezig");
 
-                if (docent.Aanwezig == true){
-                    status.setBackgroundColor(Color.parseColor("#55A4C639"));
-                    status.setText("Aanwezig");
+                    if (persoonId.equals(newString)) {
+
+                        id.setText(persoonId);
+                        naam.setText(persoonNaam);
+                        voornaam.setText(persoonVoornaam);
+                        if (persoonStatus == "true"){
+                            status.setBackgroundColor(Color.parseColor("#55A4C639"));
+                            status.setText("Aanwezig");
+                        }
+                        else if (persoonStatus == "false"){
+                            status.setBackgroundColor(Color.parseColor("#55EC4849"));
+                            status.setText("Afwezig");
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(Status.this, "Netwerk fout", Toast.LENGTH_SHORT).show();
                 }
-                else {
-                    status.setBackgroundColor(Color.parseColor("#55EC4849"));
-                    status.setText("Afwezig");
-                }
-                //connection.close();
-            }catch (Exception e){
-                Log.e("error is", e.getMessage());
             }
-        }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(Status.this, "Netwerk fout", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        RequestQueue queue = Volley.newRequestQueue(Status.this);
+        queue.add(request);
 
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,17 +105,34 @@ public class Status extends AppCompatActivity {
                 status.setText("Aanwezig");
                 Persoon_model docent = new Persoon_model();
 
-                ConnectionDB connectionDB = new ConnectionDB();
+                // Create a JSONObject containing the data to be updated.
+                JSONObject data = new JSONObject();
                 try {
-                    if (connectionDB != null){
-                        String sql = "update Boekingssysteem.Persoon set Aanwezig = 'true' where Personeelnummer like '"+newString+"'";
-                        Statement st = connection.createStatement();
-                        ResultSet rs = st.executeQuery(sql);
-                    }
-                }catch (Exception e){
-                    Log.e("error is", e.getMessage());
+                    //data.put("Content-Type", "application/json");
+                    data.put("personeelnummer", newString);
+                    data.put("naam", naam.getText());
+                    data.put("voornaam", voornaam.getText());
+                    data.put("aanwezig", true);
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
 
+                // Create the PUT request with the data in the body.
+                JsonObjectRequest request = new JsonObjectRequest(Request.Method.PUT, url2, data, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // Handle the response if needed.
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Error", error.toString());
+                    }
+                });
+
+                // Add the request to the RequestQueue.
+                RequestQueue queue = Volley.newRequestQueue(Status.this);
+                queue.add(request);
             }
         });
 
@@ -111,18 +142,37 @@ public class Status extends AppCompatActivity {
                 status.setBackgroundColor(Color.parseColor("#55EC4849"));
                 status.setText("Afwezig");
                 Persoon_model docent = new Persoon_model();
-                ConnectionDB connectionDB = new ConnectionDB();
+
+                // Create a JSONObject containing the data to be updated.
+                JSONObject data = new JSONObject();
                 try {
-                    if (connectionDB != null){
-                        String sql = "update Boekingssysteem.Persoon set Aanwezig = 'false' where Personeelnummer like '"+newString+"'";
-                        Statement st = connection.createStatement();
-                        ResultSet rs = st.executeQuery(sql);
-                    }
-                }catch (Exception e){
-                    Log.e("error is", e.getMessage());
+                    //data.put("Content-Type", "application/json");
+                    data.put("personeelnummer", newString);
+                    data.put("naam", naam.getText());
+                    data.put("voornaam", voornaam.getText());
+                    data.put("aanwezig", false);
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
 
+                // Create the PUT request with the data in the body.
+                JsonObjectRequest request = new JsonObjectRequest(Request.Method.PUT, url2, data, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // Handle the response if needed.
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Error", error.toString());
+                    }
+                });
+
+                // Add the request to the RequestQueue.
+                RequestQueue queue = Volley.newRequestQueue(Status.this);
+                queue.add(request);
             }
         });
+
     }
 }

@@ -21,8 +21,6 @@ import java.util.List;
 public class ApiIdRequest {
     Context context;
 
-
-
     public ApiIdRequest(Context context) {
         this.context = context;
     }
@@ -31,12 +29,12 @@ public class ApiIdRequest {
         void onError(String message);
         void onResponse(String persoonId);
     }
-    //String url = "https://api-example-auth-ldw.azurewebsites.net/campus";
+
     String persoonId = "";
-    String url="http://localhost:5094/api/Persoon/id?id=r123";
+    String url="https://boekingssysteem-api.azurewebsites.net/api/Persoon/get";
     public void GetId(String persoonid, VolleyResponseListener volleyResponseListener){
+        url="https://boekingssysteem-api.azurewebsites.net/api/Persoon/get"+persoonid;
     JsonArrayRequest request;
-        //url = "http://localhost:5094/api/Persoon/id?id=r123";
        request = new JsonArrayRequest(Request.Method.GET, url, null,
                 response -> {
                     try {

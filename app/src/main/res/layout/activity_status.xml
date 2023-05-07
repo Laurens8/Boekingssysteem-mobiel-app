@@ -100,8 +100,8 @@
         android:layout_marginEnd="130dp"
         android:layout_marginBottom="50dp"
         android:text="personeelsnummer:"
-        android:textSize="20dp"
         android:textColor="@color/black"
+        android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="@+id/textViewStatus"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -110,25 +110,27 @@
         android:id="@+id/textView8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="50dp"
-        android:text=""
-        android:textSize="20dp"
+        android:layout_marginBottom="48dp"
+        android:text="Laurens"
         android:textColor="@color/black"
+        android:textSize="20dp"
         app:layout_constraintBottom_toTopOf="@+id/textView9"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintStart_toEndOf="@+id/textView5" />
 
     <TextView
         android:id="@+id/textView9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="60dp"
-        android:layout_marginBottom="50dp"
-        android:text=""
-        android:textSize="20dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="48dp"
+        android:text="R0901293"
         android:textColor="@color/black"
+        android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="@+id/textViewStatus"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.75"
         app:layout_constraintStart_toEndOf="@+id/textView6" />
 
     <TextView
@@ -136,12 +138,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="100dp"
-        android:layout_marginBottom="50dp"
-        android:text=""
+        android:layout_marginBottom="52dp"
+        android:text="De Wit"
         android:textColor="@color/black"
         android:textSize="20dp"
         app:layout_constraintBottom_toTopOf="@+id/textView8"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.097"
+        app:layout_constraintStart_toEndOf="@+id/textView4" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
