@@ -52,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 EditText input = findViewById(R.id.textInputLayout4);
+                EditText wachtinput = findViewById(R.id.editTextTextPassword2);
+                String wachtwoord = wachtinput.getText().toString().trim();
                 String personeelsnummer = input.getText().toString().trim();
                 String url = "https://boekingssysteem-api.azurewebsites.net/api/Persoon/get" + personeelsnummer;
 
@@ -60,21 +62,22 @@ public class MainActivity extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
                         try {
                             String persoonId = response.getString("personeelnummer");
-                            //Toast.makeText(MainActivity.this, persoonId, Toast.LENGTH_SHORT).show();
-                            if (persoonId.equals(personeelsnummer)) {
+                            String wachtwoordId = response.getString("wachtwoord");
+                            //Toast.makeText(MainActivity.this, wachtwoordId, Toast.LENGTH_SHORT).show();
+                            if (persoonId.equals(personeelsnummer) && wachtwoordId.equals(wachtwoord)) {
                                 Intent intent = new Intent(MainActivity.this, Status.class);
                                 intent.putExtra("personeelsnummer", personeelsnummer);
                                 startActivity(intent);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Toast.makeText(MainActivity.this, "Personeelsnummer niet gevonden", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, "r-nummer of wachtwoord incorrect", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(MainActivity.this, "Personeelsnummer niet gevonden", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "r-nummer of wachtwoord incorrect", Toast.LENGTH_SHORT).show();
                     }
                 });
 
