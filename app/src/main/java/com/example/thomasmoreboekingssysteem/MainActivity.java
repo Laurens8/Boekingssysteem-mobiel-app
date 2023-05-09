@@ -66,7 +66,10 @@ public class MainActivity extends AppCompatActivity {
                             //Toast.makeText(MainActivity.this, wachtwoordId, Toast.LENGTH_SHORT).show();
                             if (persoonId.equals(personeelsnummer) && wachtwoordId.equals(wachtwoord)) {
                                 Intent intent = new Intent(MainActivity.this, Status.class);
-                                intent.putExtra("personeelsnummer", personeelsnummer);
+                                Bundle extras = new Bundle();
+                                extras.putString("personeelsnummer", personeelsnummer);
+                                extras.putString("wachtwoord", wachtwoord);
+                                intent.putExtras(extras);
                                 startActivity(intent);
                             }
                         } catch (JSONException e) {

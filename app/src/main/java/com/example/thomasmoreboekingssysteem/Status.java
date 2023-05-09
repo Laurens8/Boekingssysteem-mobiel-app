@@ -55,10 +55,13 @@ public class Status extends AppCompatActivity {
         naam= findViewById(R.id.textView7);
         voornaam= findViewById(R.id.textView8);
         Intent intent = getIntent();
-        newString= intent.getStringExtra("personeelsnummer");
+        Bundle extras = intent.getExtras();
+        String personeelnummerinlog = extras.getString("personeelsnummer");
+        String wachtwoordinlog = extras.getString("wachtwoord");
+
         Persoon_model docent = new Persoon_model();
-        String url = "https://boekingssysteem-api.azurewebsites.net/api/Persoon/get" + newString.trim();
-        String url2 = "https://boekingssysteem-api.azurewebsites.net/api/Persoon/put" + newString.trim();
+        String url = "https://boekingssysteem-api.azurewebsites.net/api/Persoon/get" + personeelnummerinlog.trim();
+        String url2 = "https://boekingssysteem-api.azurewebsites.net/api/Persoon/put" + personeelnummerinlog.trim();
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
@@ -69,7 +72,7 @@ public class Status extends AppCompatActivity {
                     String persoonVoornaam = response.getString("voornaam");
                     String persoonStatus = response.getString("aanwezig");
 
-                    if (persoonId.equals(newString)) {
+                    if (persoonId.equals(personeelnummerinlog)) {
 
                         id.setText(persoonId);
                         naam.setText(persoonNaam);
@@ -109,10 +112,11 @@ public class Status extends AppCompatActivity {
                 JSONObject data = new JSONObject();
                 try {
                     //data.put("Content-Type", "application/json");
-                    data.put("personeelnummer", newString);
+                    data.put("personeelnummer", personeelnummerinlog);
                     data.put("naam", naam.getText());
                     data.put("voornaam", voornaam.getText());
                     data.put("aanwezig", true);
+                    data.put("wachtwoord", wachtwoordinlog);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -147,10 +151,11 @@ public class Status extends AppCompatActivity {
                 JSONObject data = new JSONObject();
                 try {
                     //data.put("Content-Type", "application/json");
-                    data.put("personeelnummer", newString);
+                    data.put("personeelnummer", personeelnummerinlog);
                     data.put("naam", naam.getText());
                     data.put("voornaam", voornaam.getText());
                     data.put("aanwezig", false);
+                    data.put("wachtwoord", wachtwoordinlog);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
