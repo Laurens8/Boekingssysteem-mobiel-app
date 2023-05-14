@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Button button = findViewById(R.id.button);
+        Button button2 = findViewById(R.id.button2);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,6 +88,14 @@ public class MainActivity extends AppCompatActivity {
                 // Add the request to the RequestQueue.
                 RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
                 queue.add(request);
+            }
+        });
+
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, WachtwoordVergeten.class);
+                startActivity(intent);
             }
         });
     }

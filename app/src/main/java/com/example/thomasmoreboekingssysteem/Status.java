@@ -36,7 +36,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Status extends AppCompatActivity {
-
+    Boolean admin;
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,8 +70,8 @@ public class Status extends AppCompatActivity {
                     String persoonId = response.getString("personeelnummer");
                     String persoonNaam = response.getString("naam");
                     String persoonVoornaam = response.getString("voornaam");
+                    admin = response.getBoolean("admin");
                     String persoonStatus = response.getString("aanwezig");
-
                     if (persoonId.equals(personeelnummerinlog)) {
 
                         id.setText(persoonId);
@@ -116,6 +116,7 @@ public class Status extends AppCompatActivity {
                     data.put("naam", naam.getText());
                     data.put("voornaam", voornaam.getText());
                     data.put("aanwezig", true);
+                    data.put("admin", admin);
                     data.put("wachtwoord", wachtwoordinlog);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -155,6 +156,7 @@ public class Status extends AppCompatActivity {
                     data.put("naam", naam.getText());
                     data.put("voornaam", voornaam.getText());
                     data.put("aanwezig", false);
+                    data.put("admin", admin);
                     data.put("wachtwoord", wachtwoordinlog);
                 } catch (JSONException e) {
                     e.printStackTrace();
