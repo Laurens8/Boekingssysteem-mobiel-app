@@ -46,7 +46,7 @@
         android:id="@+id/divider"
         android:layout_width="409dp"
         android:layout_height="3dp"
-        android:layout_marginBottom="110dp"
+        android:layout_marginBottom="210dp"
         android:background="?android:attr/listDivider"
         android:backgroundTint="?attr/colorError"
         app:layout_constraintBottom_toTopOf="@+id/textView2"
@@ -58,10 +58,9 @@
         android:layout_width="272dp"
         android:layout_height="129dp"
         android:layout_marginEnd="50dp"
-        app:layout_constraintBottom_toTopOf="@+id/divider"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/download" />
+        app:srcCompat="@drawable/download"
+        tools:layout_editor_absoluteY="6dp" />
 
     <EditText
         android:id="@+id/editTextTextPassword2"
@@ -80,8 +79,8 @@
         android:layout_width="300dp"
         android:layout_height="56dp"
         android:layout_marginBottom="20dp"
-        android:visibility="visible"
         android:inputType="textPassword"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/textView3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -92,8 +91,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
-        android:textSize="60px"
         android:text="Personeelnummer"
+        android:textSize="60px"
         app:layout_constraintBottom_toTopOf="@+id/inputpersoneel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -106,9 +105,7 @@
         android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/textView2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
-
-
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

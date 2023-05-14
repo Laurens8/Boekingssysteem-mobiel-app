@@ -98,6 +98,7 @@ public class WachtwoordVergeten extends AppCompatActivity {
                                         });
                                         RequestQueue queue = Volley.newRequestQueue(WachtwoordVergeten.this);
                                         queue.add(request);
+                                        Toast.makeText(WachtwoordVergeten.this, "Wachtwoord is aangepast", Toast.LENGTH_SHORT).show();
                                     }
 
                                 }

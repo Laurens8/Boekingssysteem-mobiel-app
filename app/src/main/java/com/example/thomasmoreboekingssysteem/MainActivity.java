@@ -73,6 +73,9 @@ public class MainActivity extends AppCompatActivity {
                                 intent.putExtras(extras);
                                 startActivity(intent);
                             }
+                            else{
+                                Toast.makeText(MainActivity.this, "r-nummer of wachtwoord incorrect", Toast.LENGTH_SHORT).show();
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                             Toast.makeText(MainActivity.this, "r-nummer of wachtwoord incorrect", Toast.LENGTH_SHORT).show();
