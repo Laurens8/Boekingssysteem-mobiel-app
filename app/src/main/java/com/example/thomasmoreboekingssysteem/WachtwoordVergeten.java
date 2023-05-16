@@ -71,6 +71,9 @@ public class WachtwoordVergeten extends AppCompatActivity {
                                     if (!wachtwoord1.getText().toString().equals(wachtwoord2.getText().toString())){
                                         Toast.makeText(WachtwoordVergeten.this, "Wachtwoorden moet overeen komen", Toast.LENGTH_LONG).show();
                                     }
+                                    if(wachtwoord1.getText().length() < 8 && wachtwoord2.getText().length() < 8){
+                                        Toast.makeText(WachtwoordVergeten.this, "Wachtwoord moet minstens 8 tekens lang zijn", Toast.LENGTH_LONG).show();
+                                    }
                                     else{
                                         JSONObject data = new JSONObject();
                                         try {
