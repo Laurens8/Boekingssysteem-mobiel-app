@@ -59,7 +59,6 @@ public class Status extends AppCompatActivity {
         String personeelnummerinlog = extras.getString("personeelsnummer");
         String wachtwoordinlog = extras.getString("wachtwoord");
 
-        Persoon_model docent = new Persoon_model();
         String url = "https://boekingssysteem-api.azurewebsites.net/api/Persoon/get" + personeelnummerinlog.trim();
         String url2 = "https://boekingssysteem-api.azurewebsites.net/api/Persoon/put" + personeelnummerinlog.trim();
 
@@ -106,7 +105,6 @@ public class Status extends AppCompatActivity {
             public void onClick(View view) {
                 status.setBackgroundColor(Color.parseColor("#55A4C639"));
                 status.setText("Aanwezig");
-                Persoon_model docent = new Persoon_model();
 
                 // Create a JSONObject containing the data to be updated.
                 JSONObject data = new JSONObject();
@@ -146,7 +144,6 @@ public class Status extends AppCompatActivity {
             public void onClick(View view) {
                 status.setBackgroundColor(Color.parseColor("#55EC4849"));
                 status.setText("Afwezig");
-                Persoon_model docent = new Persoon_model();
 
                 // Create a JSONObject containing the data to be updated.
                 JSONObject data = new JSONObject();
